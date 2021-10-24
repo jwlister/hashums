@@ -72,12 +72,12 @@ fn main() {
 
         if hashes.iter().all_equal() {
             print_with_color(
-                "All hashes the same (combined is always ignored when comparing hashes)",
+                "SAME",
                 Color::Green,
             );
         } else {
             print_with_color(
-                "Not all hashes the same (combined is always ignored when comparing hashes)",
+                "DIFFERENT",
                 Color::Red,
             );
         }
