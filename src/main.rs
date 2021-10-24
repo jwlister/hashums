@@ -71,28 +71,19 @@ fn main() {
         };
 
         if hashes.iter().all_equal() {
-            print_with_color(
-                "SAME",
-                Color::Green,
-            );
+            print_with_color("SAME\n", Color::Green);
         } else {
-            print_with_color(
-                "DIFFERENT",
-                Color::Red,
-            );
+            print_with_color("DIFFERENT\n", Color::Red);
         }
 
         stdout.reset().unwrap();
     }
 
     for (path, hash) in paths.iter().zip(hashes.iter()) {
-        if paths.len() > 1 {
-            println!();
-        }
-        println!("{}\n{}", path.display(), hash);
+        println!("{}\n{}\n", path.display(), hash);
     }
 
-    print!("\nPress enter to exit.");
+    print!("Press enter to exit.");
     io::stdout().flush().unwrap();
     io::stdin().read_line(&mut String::new()).unwrap();
 }
