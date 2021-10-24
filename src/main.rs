@@ -36,6 +36,10 @@ fn main() {
         })
         .collect();
 
+    if paths_and_hashes.is_empty() {
+        return;
+    }
+
     println!("SHA-256\n");
 
     if paths_and_hashes.len() > 1 {
