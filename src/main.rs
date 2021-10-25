@@ -3,7 +3,8 @@ use sha2::{Digest, Sha256};
 use std::env;
 use std::fs::File;
 use std::io::{self, Read, Write};
-use std::path::Path;
+use std::path::PathBuf;
+use std::str::FromStr;
 use termcolor::{Color, ColorChoice, ColorSpec, StandardStream, WriteColor};
 use walkdir::WalkDir;
 
@@ -16,7 +17,7 @@ fn main() {
     let path_iter = || {
         env::args()
             .skip(1)
-            .map(|arg| Path::new(&arg).to_owned())
+            .map(|arg| PathBuf::from_str(&arg).unwrap())
             .filter(|p| p.exists())
     };
 
