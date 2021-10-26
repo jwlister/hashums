@@ -18,6 +18,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
+AppCopyright=Copyright (c) 2021 {#MyAppPublisher}
 DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
@@ -25,9 +26,11 @@ LicenseFile=LICENSE
 ; Remove the following line to run in administrative install mode (install for all users.)
 PrivilegesRequired=lowest
 OutputDir=.
-OutputBaseFilename=hashums-{#MyAppVersion}-x86_64-windows
+OutputBaseFilename=hashums-{#MyAppVersion}-x86_64-windows-setup
 Compression=lzma
 SolidCompression=yes
+VersionInfoCompany=
+VersionInfoVersion=0.1.0
 WizardStyle=modern
 
 [Languages]
@@ -44,7 +47,7 @@ Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{usersendto}\{#MyAppName}"; Filename: "{app}\{#MyAppName}"
 
 [Registry]
-Root: HKCU; Subkey: "SOFTWARE\Classes\Drive\shell\hashums"; ValueType: string; ValueData: "Hashums"  
-Root: HKCU; Subkey: "SOFTWARE\Classes\Drive\shell\hashums\command"; ValueType: string; ValueData: "{app}\{#MyAppExeName}"
-Root: HKCU; Subkey: "SOFTWARE\Classes\Directory\Background\shell\hashums"; ValueType: string; ValueData: "Hashums"  
-Root: HKCU; Subkey: "SOFTWARE\Classes\Directory\Background\shell\hashums\command"; ValueType: string; ValueData: "{app}\{#MyAppExeName}"
+Root: HKCU; Subkey: "SOFTWARE\Classes\Drive\shell\hashums"; ValueType: string; ValueData: "Hashums"; Flags: uninsdeletekey  
+Root: HKCU; Subkey: "SOFTWARE\Classes\Drive\shell\hashums\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" %V"
+Root: HKCU; Subkey: "SOFTWARE\Classes\Directory\Background\shell\hashums"; ValueType: string; ValueData: "Hashums"; Flags: uninsdeletekey  
+Root: HKCU; Subkey: "SOFTWARE\Classes\Directory\Background\shell\hashums\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%V"""
