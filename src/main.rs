@@ -66,6 +66,9 @@ fn main() {
     };
 
     if paths_and_hashes.is_empty() {
+        println!("No valid files found (did you select a folder with no files?)");
+        eprint!("\nPress enter to exit...");
+        pause();
         return;
     }
 
@@ -113,9 +116,7 @@ fn main() {
 
     println!("SHA-256");
     eprint!("\nPress enter to exit...");
-
-    // Unwrap: no recourse, is end of program anyway, panic can give some info
-    io::stdin().read_line(&mut String::new()).unwrap();
+    pause();
 }
 
 fn hash_in_chunks<R>(reader: &mut R, buf: &mut Vec<u8>, chunk_len: usize) -> io::Result<String>
@@ -128,4 +129,9 @@ where
         buf.clear();
     }
     Ok(format!("{:X}", hasher.finalize()))
+}
+
+fn pause() {
+    // Unwrap: no recourse, is end of program anyway, panic can give some info
+    io::stdin().read_line(&mut String::new()).unwrap();
 }
