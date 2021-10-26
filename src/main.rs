@@ -102,7 +102,7 @@ fn main() {
             .sorted_unstable_by_key(|(path, _)| path)
             .for_each(|(_, hash)| hasher.update(hash));
 
-        println!("Combined\n{}\n", format!("{:X}", hasher.finalize()));
+        println!("Combined\n{:X}\n", hasher.finalize());
     }
 
     println!("SHA-256");
