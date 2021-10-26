@@ -1,4 +1,5 @@
 #![feature(bool_to_option)]
+use atty::Stream;
 use itertools::Itertools;
 use sha2::{Digest, Sha256};
 use std::env;
@@ -21,7 +22,7 @@ fn main() {
             .map(|arg| PathBuf::from_str(&arg).unwrap()) // Infallible
             .filter(|path| {
                 fs::metadata(path)
-                    .map_err(|err| println!("{}", err))
+                    .map_err(|err| eprintln!("{}", err))
                     .is_ok()
             })
             .collect();
@@ -35,7 +36,7 @@ fn main() {
             .flat_map(|path| {
                 WalkDir::new(path)
                     .into_iter()
-                    .filter_map(|entry| entry.map_err(|err| println!("{}", err)).ok())
+                    .filter_map(|entry| entry.map_err(|err| eprintln!("{}", err)).ok())
                     .filter_map(|entry| entry.path().is_file().then_some(entry.into_path()))
             })
             .collect();
@@ -46,13 +47,13 @@ fn main() {
             .filter_map(|path| {
                 File::open(&path)
                     .map(|file| (path, file))
-                    .map_err(|err| println!("{}", err))
+                    .map_err(|err| eprintln!("{}", err))
                     .ok()
             })
             .filter_map(|(path, mut file)| {
                 hash_in_chunks(&mut file, &mut buf, BUF_LEN)
                     .map(|hash| (path, hash))
-                    .map_err(|err| println!("{}", err))
+                    .map_err(|err| eprintln!("{}", err))
                     .ok()
             })
             .collect()
@@ -71,11 +72,15 @@ fn main() {
         let mut stdout = StandardStream::stdout(ColorChoice::Always);
 
         let mut print_with_color = |s, clr| {
-            // Ignore result: no recourse, non-critical
-            let _ = stdout.set_color(ColorSpec::new().set_fg(Some(clr)));
+            if atty::is(Stream::Stdout) {
+                // Ignore result: no recourse, non-critical
+                let _ = stdout.set_color(ColorSpec::new().set_fg(Some(clr)));
 
-            // Ignore result: no recourse, non-critical
-            let _ = writeln!(&mut stdout, "{}", s);
+                // Ignore result: no recourse, non-critical
+                let _ = writeln!(&mut stdout, "{}", s);
+            } else {
+                println!("{}", s);
+            }
         };
 
         if paths_and_hashes.iter().map(|(_, hash)| hash).all_equal() {
@@ -84,8 +89,10 @@ fn main() {
             print_with_color("DIFFERENT\n", Color::Red);
         }
 
-        // Ignore result: no recourse, non-critical
-        let _ = stdout.reset();
+        if atty::is(Stream::Stdout) {
+            // Ignore result: no recourse, non-critical
+            let _ = stdout.reset();
+        }
 
         let mut hasher = Sha256::new();
 
@@ -98,11 +105,8 @@ fn main() {
         println!("Combined\n{}\n", format!("{:X}", hasher.finalize()));
     }
 
-    println!("SHA-256\n");
-    print!("Press enter to exit...");
-
-    // Ignore result: no recourse, non-critical
-    let _ = io::stdout().flush();
+    println!("SHA-256");
+    eprint!("\nPress enter to exit...");
 
     // Unwrap: no recourse, is end of program anyway, panic can give some info
     io::stdin().read_line(&mut String::new()).unwrap();
