@@ -99,7 +99,7 @@ fn main() {
     }
 
     println!("SHA-256\n");
-    print!("Press enter to exit.");
+    print!("Press enter to exit...");
 
     // Ignore result: no recourse, non-critical
     let _ = io::stdout().flush();
