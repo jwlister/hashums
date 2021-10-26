@@ -17,6 +17,8 @@ fn main() {
         println!("{}", arg);
     }
 
+    eprintln!("\nComputing hashes (error-producing items will be skipped)...\n");
+
     // Only read 100 MiB at a time, enabling us to hash arbitrarily large files
     // without using much memory.
     const BUF_LEN: usize = 104_857_600;
