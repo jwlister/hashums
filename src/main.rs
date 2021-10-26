@@ -12,6 +12,11 @@ use termcolor::{Color, ColorChoice, ColorSpec, StandardStream, WriteColor};
 use walkdir::WalkDir;
 
 fn main() {
+    println!("Arguments:");
+    for arg in env::args().skip(1) {
+        println!("{}", arg);
+    }
+
     // Only read 100 MiB at a time, enabling us to hash arbitrarily large files
     // without using much memory.
     const BUF_LEN: usize = 104_857_600;
