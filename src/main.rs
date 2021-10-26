@@ -62,20 +62,12 @@ fn main() {
         return;
     }
 
-    println!("\nSHA-256\n");
+    println!();
+    for (path, hash) in &paths_and_hashes {
+        println!("{}\n{}\n", path.display(), hash);
+    }
 
     if paths_and_hashes.len() > 1 {
-        let mut hasher = Sha256::new();
-
-        // Sort so it doesn't matter what order the paths were sent in
-        paths_and_hashes
-            .iter()
-            .sorted_unstable_by_key(|(path, _)| path)
-            .for_each(|(_, hash)| hasher.update(hash));
-
-        println!("Combined");
-        println!("{}\n", format!("{:X}", hasher.finalize()));
-
         let mut stdout = StandardStream::stdout(ColorChoice::Always);
 
         let mut print_with_color = |s, clr| {
@@ -94,12 +86,19 @@ fn main() {
 
         // Ignore result: no recourse, non-critical
         let _ = stdout.reset();
+
+        let mut hasher = Sha256::new();
+
+        // Sort so it doesn't matter what order the paths were sent in
+        paths_and_hashes
+            .iter()
+            .sorted_unstable_by_key(|(path, _)| path)
+            .for_each(|(_, hash)| hasher.update(hash));
+
+        println!("Combined\n{}\n", format!("{:X}", hasher.finalize()));
     }
 
-    for (path, hash) in &paths_and_hashes {
-        println!("{}\n{}\n", path.display(), hash);
-    }
-
+    println!("SHA-256\n");
     print!("Press enter to exit.");
 
     // Ignore result: no recourse, non-critical
