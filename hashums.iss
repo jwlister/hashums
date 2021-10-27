@@ -2,10 +2,11 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Hashums"
-#define MyAppVersion "0.1.0"
+#define MyAppVersion "0.2.0"
 #define MyAppPublisher "Jeremiah Lister"
 #define MyAppURL "https://github.com/jwlister/hashums"
 #define MyAppExeName "hashums.exe"
+#define MyAppInstallerVersion "0.2.0"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -30,7 +31,7 @@ OutputBaseFilename=hashums-{#MyAppVersion}-x86_64-windows-setup
 Compression=lzma
 SolidCompression=yes
 VersionInfoCompany=
-VersionInfoVersion=0.1.0
+VersionInfoVersion={#MyAppInstallerVersion}
 WizardStyle=modern
 
 [Languages]
